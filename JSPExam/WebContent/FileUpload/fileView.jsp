@@ -1,0 +1,104 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ page import ="com.oreilly.servlet.MultipartRequest, 
+				  com.oreilly.servlet.multipart.DefaultFileRenamePolicy,
+				  java.util.*, java.io.*" %>
+
+<%
+
+String realFolder = "";
+String saveFolder = "upload";
+String encType = "utf-8";
+
+int maxSize = 10 * 1024 * 1024; //10MB
+ServletContext context = getServletContext();
+realFolder = context.getRealPath(saveFolder); //실제 경로 upload로 지정
+
+ArrayList saveFiles = new ArrayList(); //세이브 파일
+ArrayList origFiles = new ArrayList(); //원본 파일
+
+String paramUser = "";
+String paramTitle = "";
+String paramAbstract = "";
+
+try{
+	MultipartRequest multi = new MultipartRequest(request, realFolder, maxSize,
+							 encType, new DefaultFileRenamePolicy());
+
+	paramUser = multi.getParameter("txtUser");
+	paramTitle = multi.getParameter("txtTitle");
+	paramAbstract = multi.getParameter("txtAbstract");
+	
+	Enumeration files = multi.getFileNames();
+	
+	while(files.hasMoreElements()) {
+		String name = (String)files.nextElement();
+		saveFiles.add(multi.getFilesystemName(name));
+		origFiles.add(multi.getOriginalFileName(name));
+		
+	}
+%>				      
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>File Info</title>
+<link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+	<table width="75%" border="1" align="center" cellpadding="1" cellspacing="1"
+		   bordercolor="#660000" bgcolor="#FFFF99">		
+		<tr>
+			<td width="10%" bgcolor="#FFCC00">
+				<div align="right"><strong>User</strong></div>
+			</td>
+			<td width="30%"><%=paramUser %></td> <!-- 사용자 유저 -->
+			
+			<td width="10%" bgcolor="#FFCC00">
+				<div align="right"><strong>Title</strong></div>
+			</td>
+			<td width="30%"><%=paramTitle %></td> <!-- 타이틀 -->
+		</tr>
+		
+		<tr>
+			<td width="10%" bgcolor="#FFCC00">
+				<div align="right"><strong>Abstract</strong></div>
+			</td>
+			<td width="50%" colspan="3">
+			<textarea cols="50" disabled="disabled">
+					<%=paramAbstract %>
+			</textarea>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="4" bgcolor="#ffff">&nbsp;</td>
+		</tr>
+		
+		<tr>
+			<td colspan="4"><strong>업로드된 파일입니다.</strong></td>
+		</tr>
+		
+		<% for(int i=0; i<saveFiles.size(); i++){ %>
+		<tr>
+			<td colsapn="4">
+				<a href="<%="/JSPExam/"+saveFolder+"/"+saveFiles.get(i)%>">
+					<strong><%=origFiles.get(i)%></strong>
+				</a>
+			</td>
+		</tr>
+		<% } %>
+	</table>
+</body>
+</html>
+<% 
+}catch(IOException ioe){
+	ioe.printStackTrace();
+	System.out.println(ioe);
+}catch(Exception e){
+	System.out.println(e);	
+}
+%>
+
