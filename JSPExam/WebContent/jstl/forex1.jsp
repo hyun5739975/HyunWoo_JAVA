@@ -14,7 +14,7 @@
 </head>
 <body>
 
-인기 미국 드라마 :
+인기 미국 영화 :
 <ul>
     <c:forEach var="movie" items="${movieList }">
                <li>${movie}</li>
