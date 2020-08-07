@@ -10,21 +10,22 @@
 <%!
 // 한 페이지에 보여줄 목록 수를 지정
  int pageSize = 5;
+
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 %>
 <%
-    String pageNum = request.getParameter("pageNum");
-	//무엇을 검색할지 받아옴
-	String searchWhat = request.getParameter("searchWhat");
-	
-	//검색할 내용
-	String searchText = request.getParameter("searchText");
-	
-	//파라미터로 받아옴 값을 한글로 변환
-	if(searchText != null) {
-		searchText = new String(searchText.getBytes("utf-8"),"utf-8");
-	}
 
+    String pageNum = request.getParameter("pageNum");
+    // 무엇을 검색할지 받아옴    
+    String searchWhat = request.getParameter("searchWhat");
+    // 검색할 내용
+    String searchText = request.getParameter("searchText");
+    
+    // 파라미터 로 받아온 값을 한글로 변환
+    if(searchText != null) {
+        searchText = new String(searchText.getBytes("utf-8"), "utf-8");	
+    }
+    
     if( pageNum == null) {
     	pageNum ="1";
     }
@@ -40,19 +41,24 @@ int number =0;
 List<BoardVO> articleList = null;
 BoardDAO dbPro = BoardDAO.getInstance();
 
-//검색이 아니면 전체 리스트를 보여주고, 검색이면 검색한 내용을 보여줌
-if(searchText == null) {
-count = dbPro.getArticleCount();// 전체 글수
-	if( count > 0) {
-		articleList = dbPro.getArticles(startRow, endRow);
-	}
+// 검색이 아니면 전체 리스트를 보여주고 , 검색이면 검색한 내용을 보여줌
+if(searchText == null ) {
+      count = dbPro.getArticleCount();// 전체 글수
+
+     if( count > 0) {
+	articleList = dbPro.getArticles(startRow, endRow);
+       }
+
 }else {
-		count = dbPro.getArticleCount(searchWhat, searchText);
-	if( count > 0) {
-		articleList = dbPro.getArticles(searchWhat, searchText, startRow, endRow);
-	}	
+	 count = dbPro.getArticleCount(searchWhat, searchText);
+
+     if( count > 0) {
+	articleList = dbPro.getArticles(searchWhat, searchText, startRow, endRow);
+    }
 }
+
 number = count - (currentPage -1) * pageSize;
+
 %>
     
 <!DOCTYPE html>
@@ -137,6 +143,7 @@ number = count - (currentPage -1) * pageSize;
 <%} %>
 
 <%
+
  if(count > 0) {
 	 
 	 int pageBlock = 5;
@@ -166,15 +173,18 @@ number = count - (currentPage -1) * pageSize;
    }
  }
 %>
-<!-- 검색창 -->
+
+<!--검색창  -->
 <form action="list.jsp">
-	<select name="searchWhat">
-		<option value="writer">작성자</option>
-		<option value="subject">제목</option>
-		<option value="content">내용</option>
-	</select>
-	<input type="text" name="searchText">
-	<input type="submit" value="검색">
+
+  <select name="searchWhat">
+         <option value="writer">작성자</option>
+  <option value="subject">제목</option>
+  <option value="content">내용</option>
+  </select>
+  <input type="text" name="searchText">
+  <input type="submit" value="검색">
+
 </form>
 </div>
 </body>

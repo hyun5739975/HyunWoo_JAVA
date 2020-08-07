@@ -82,8 +82,8 @@ public class BoardDAO {
 		}
 	}// end insertArticle
 
-	//첫번째 전체 글의 갯수를 가져올 메소드 구현 개수를 가져오니깐 반환형 int 형으로 지정
-	//검색한 내용이 몇개인지 알아보는 메소드(검색조건(what),검색내용 String content))
+	// 첫번째 전체 글의 개수를 가져올 메소드 구현
+	// 검색한 내용이 몇개인지 알아보는 메소드(검색조건(what), 검색내용(content))
 	public int getArticleCount() {
 
 		Connection con = null;
@@ -93,8 +93,10 @@ public class BoardDAO {
 
 		try {
 			con = ConnUtil.getConnection();
-			pstmt = con.prepareStatement("select count(*) from board");
-			rs = pstmt.executeQuery(); //값 조회시만 executeQuery
+			String sql ="select count(*) from board";
+
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
 				x = rs.getInt(1);
@@ -111,8 +113,8 @@ public class BoardDAO {
 	}
 
 	// board table에서 가져올 메소드 구현 List
-	//검색한 내용이 몇개인지 알아보는 메소드(검색조건(what),검색내용 String content))
-	//(start 시작번호, end 끝번호) 시작번호와 끝번호는 페이지 처리
+	// 검색한 내용을 리스트로 받아옴(what:검색조건, content:검색내용, 
+	//start:시작번호, end:끝번호) 시작번호와 끝번호는 페이 처리
 	public List<BoardVO> getArticles(int start, int end) {// 수정1
 
 		Connection con = null;
@@ -128,7 +130,7 @@ public class BoardDAO {
 			pstmt =con.prepareStatement(
 					"select * from (select rownum rnum, num, writer, email, "
 							+ "subject, pass, regdate, readcount, ref, step, depth, "
-							+ "content, ip from (select * from board order by ref desc, " 
+							+ "content, ip from (select * from board order by ref desc, "
 							+ "step asc)) where rnum >= ? and rnum <= ?");
 
 			// 수정 3
@@ -136,9 +138,8 @@ public class BoardDAO {
 			pstmt.setInt(2, end);
 
 			rs = pstmt.executeQuery();
-
 			if(rs.next()) {
-					articleList = new ArrayList<BoardVO>(end-start+1);// 수정 4
+				articleList = new ArrayList<BoardVO>(5);// 수정 4
 				do {
 					BoardVO article = new BoardVO();
 					article.setNum(rs.getInt("num"));
@@ -183,11 +184,13 @@ public class BoardDAO {
 		try {
 			con=ConnUtil.getConnection();
 
-			pstmt = con.prepareStatement("update board set readcount=readcount+1 where num=?");
+			pstmt = con.prepareStatement(
+					"update board set readcount=readcount+1 where num=?");
 			pstmt.setInt(1, num);
 			pstmt.executeUpdate();
 
-			pstmt =con.prepareStatement("select * from board where num =?");
+			pstmt =con.prepareStatement(
+					"select * from board where num =?");
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 
@@ -229,7 +232,8 @@ public class BoardDAO {
 
 		try {
 			con = ConnUtil.getConnection();
-			pstmt = con.prepareStatement("select * from board where num=?");
+			pstmt = con.prepareStatement(
+					"select * from board where num=?");
 
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
@@ -280,13 +284,14 @@ public class BoardDAO {
 			if(rs.next()) {
 				dbpasswd = rs.getString("pass");
 				if(dbpasswd.equals(article.getPass())) {
-					sql ="update board set writer=?, subject=?, content=? where num=?";
+					sql ="update board set writer=?, email=?, subject=?, content=? where num=?";
 					pstmt = con.prepareStatement(sql);
 
 					pstmt.setString(1, article.getWriter());
-					pstmt.setString(2, article.getSubject());
-					pstmt.setString(3, article.getContent());
-					pstmt.setInt(4, article.getNum());
+					pstmt.setString(2, article.getEmail());
+					pstmt.setString(3, article.getSubject());
+					pstmt.setString(4, article.getContent());
+					pstmt.setInt(5, article.getNum());
 					pstmt.executeUpdate();
 
 					result = 1;// 수정 성공
@@ -306,25 +311,27 @@ public class BoardDAO {
 
 		return result;
 	}
-	// 글 삭제
-	// 비밀번호를 입력하고 삭제를 수행 데이터베이스에 저장된 비밀번호와 비교하여 맞으면 수행
-	// 데이터베이스에 저장된 비밀번호와 비교하여 맞으면 수행
+
+
+	// 글삭제
+	// 비밀번호를 입력하고 삭제를 수행
+	//데이터베이스에 저장된 비밀번호와 비교하여 맞으면 수행
+
 	public int deleteArticle(int num, String pass) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
-		String sql = "select pass from board where num=?", 
-				dbpasswd="";
-
+		String dbpasswd="";
 		int result = -1;
 
 		try {
-			con = ConnUtil.getConnection();
-			pstmt  = con.prepareStatement(sql);
 
-			pstmt.setInt(1, num); //(1)DB 첫번째 열 [num], (num)Form 값
+			con = ConnUtil.getConnection();
+			pstmt = con.prepareStatement(
+					"select pass from board where num =?");
+
+			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
@@ -332,17 +339,20 @@ public class BoardDAO {
 
 				if(dbpasswd.equals(pass)) {
 
-					pstmt = con.prepareStatement("delete from board where num=?");
+					pstmt = con.prepareStatement(
+							"delete from board where num=?");
 
 					pstmt.setInt(1, num);
 					pstmt.executeUpdate();
 
 					result = 1;
+					// 비밀번호 일치
+
 				}else {
 					result = 0;
+					// 비밀번호가 틀림
 				}
 			}
-
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}finally {
@@ -350,10 +360,12 @@ public class BoardDAO {
 			if(pstmt != null) try { pstmt.close(); }catch(SQLException ss) {}
 			if(con != null) try { con.close(); }catch(SQLException ss) {}
 		}
+
 		return result;
 	}
 
-	
+
+	// 검색한 내용이 몇개인지 알아보는 메소드(검색조건(what), 검색내용(content))
 	public int getArticleCount(String what, String content) {
 
 		Connection con = null;
@@ -363,9 +375,11 @@ public class BoardDAO {
 
 		try {
 			con = ConnUtil.getConnection();
-			String sql="select count(*) from board where " + what+" like '%" + content+ "%'";
-			//pstmt = con.prepareStatement("select count(*) from board");
-			rs = pstmt.executeQuery(); //값 조회시만 executeQuery
+			String sql ="select count(*) from board where "
+					+what+ " like '%" +content+"%'";
+
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
 				x = rs.getInt(1);
@@ -382,9 +396,10 @@ public class BoardDAO {
 	}
 
 	// board table에서 가져올 메소드 구현 List
-	//검색한 내용이 몇개인지 알아보는 메소드(검색조건(what),검색내용 String content))
-	//(start 시작번호, end 끝번호)
-	public List<BoardVO> getArticles(String what, String content, int start, int end) {// 수정1
+	// 검색한 내용을 리스트로 받아옴(what:검색조건, content:검색내용, 
+	//start:시작번호, end:끝번호) 시작번호와 끝번호는 페이 처리
+	public List<BoardVO> getArticles(String what, String content, 
+			int start, int end) {// 수정1
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -400,7 +415,7 @@ public class BoardDAO {
 					"select * from (select rownum rnum, num, writer, email, "
 							+ "subject, pass, regdate, readcount, ref, step, depth, "
 							+ "content, ip from (select * from board where "
-							+ what + " like '%"+content+"%' order by ref desc, " 
+							+ what+" like '%"+content+"%' order by ref desc, "
 							+ "step asc)) where rnum >= ? and rnum <= ?");
 
 			// 수정 3
@@ -408,24 +423,23 @@ public class BoardDAO {
 			pstmt.setInt(2, end);
 
 			rs = pstmt.executeQuery();
+			articleList = new ArrayList<BoardVO>(5);// 수정 4
+			while(rs.next()) {
 
-			if(rs.next()) {
-				articleList = new ArrayList<BoardVO>(5);// 수정 4
-				while(rs.next()) {
-					BoardVO article = new BoardVO();
-					article.setNum(rs.getInt("num"));
-					article.setWriter(rs.getString("writer"));
-					article.setEmail(rs.getString("email"));
-					article.setSubject(rs.getString("subject"));
-					article.setPass(rs.getString("pass"));
-					article.setRegdate(rs.getTimestamp("regdate"));
-					article.setRef(rs.getInt("ref"));
-					article.setStep(rs.getInt("step"));
-					article.setDepth(rs.getInt("depth"));
-					article.setContent(rs.getString("content"));
-					article.setIp(rs.getString("ip"));
-					articleList.add(article);
-				}
+				BoardVO article = new BoardVO();
+				article.setNum(rs.getInt("num"));
+				article.setWriter(rs.getString("writer"));
+				article.setEmail(rs.getString("email"));
+				article.setSubject(rs.getString("subject"));
+				article.setPass(rs.getString("pass"));
+				article.setRegdate(rs.getTimestamp("regdate"));
+				article.setRef(rs.getInt("ref"));
+				article.setStep(rs.getInt("step"));
+				article.setDepth(rs.getInt("depth"));
+				article.setContent(rs.getString("content"));
+				article.setIp(rs.getString("ip"));
+				articleList.add(article);
+
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -439,6 +453,3 @@ public class BoardDAO {
 	}
 
 }
-
-
-
