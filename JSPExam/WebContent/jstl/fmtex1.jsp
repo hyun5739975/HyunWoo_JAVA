@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!-- 영문 설정은 6번 라인 추가 한글 설정은 6번 라인 주석 처리 -->
 <fmt:setLocale value="en_us"/>    
 <fmt:bundle basename="bundle.testBundle">
 <fmt:message key="TITLE" var="title"/>
