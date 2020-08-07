@@ -13,10 +13,9 @@
 </head>
 <body>
 파라미터 : <c:out value="${param.id }"/>
-<form action="fmtex2.jsp" method="post"></form>
+<form action="fmtex2.jsp" method="post">
 	<input type="text" name="id">
 	<input type="submit" value="확인">
-
-
+</form>
 </body>
 </html>
