@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <title>게시판</title>
 <link href="style.css" type="text/css" rel="stylesheet">
-<script type="text/javascript" src="javascript.js"></script>
+<script type="text/javascript" src="script.js"></script>
 </head>
 <%
    int num = Integer.parseInt(request.getParameter("num"));
@@ -89,5 +89,7 @@ bgcolor="<%=bodyback_c %>" align="center">
 <%
    }catch(Exception e){}
 %>
+
+
 </body>
 </html>

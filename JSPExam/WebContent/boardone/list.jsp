@@ -8,21 +8,51 @@
 <%@ include file="view/color.jsp" %>
 
 <%!
+// 한 페이지에 보여줄 목록 수를 지정
+ int pageSize = 5;
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 %>
 <%
-int count =0;
+    String pageNum = request.getParameter("pageNum");
+	//무엇을 검색할지 받아옴
+	String searchWhat = request.getParameter("searchWhat");
+	
+	//검색할 내용
+	String searchText = request.getParameter("searchText");
+	
+	//파라미터로 받아옴 값을 한글로 변환
+	if(searchText != null) {
+		searchText = new String(searchText.getBytes("utf-8"),"utf-8");
+	}
+
+    if( pageNum == null) {
+    	pageNum ="1";
+    }
+    
+    // 현재페이지
+    int currentPage = Integer.parseInt(pageNum);
+    int startRow =(currentPage - 1 ) * pageSize + 1;
+    int endRow = currentPage * pageSize;
+    
+    
+ int count =0;
 int number =0;
 List<BoardVO> articleList = null;
 BoardDAO dbPro = BoardDAO.getInstance();
+
+//검색이 아니면 전체 리스트를 보여주고, 검색이면 검색한 내용을 보여줌
+if(searchText == null) {
 count = dbPro.getArticleCount();// 전체 글수
-
-if( count > 0) {
-	articleList = dbPro.getArticles();
+	if( count > 0) {
+		articleList = dbPro.getArticles(startRow, endRow);
+	}
+}else {
+		count = dbPro.getArticleCount(searchWhat, searchText);
+	if( count > 0) {
+		articleList = dbPro.getArticles(searchWhat, searchText, startRow, endRow);
+	}	
 }
-
-number = count;
-
+number = count - (currentPage -1) * pageSize;
 %>
     
 <!DOCTYPE html>
@@ -74,10 +104,24 @@ number = count;
    <tr height="30">
        <td align="center" width="50"><%=number-- %></td>
        <td width="250">
-         <a href="content.jsp?num=<%=article.getNum()%>&pageNum=1">
+       
+       <%
+          int wid=0;
+          
+          if(article.getDepth() > 0) {
+        	  wid = 5 * (article.getDepth());
+      %> 
+        <img src="img/level.gif" width="<%=wid %>" height="16">
+        <img src="img/re.gif"> 
+      <%  }  else { %>    
+       <img src="img/level.gif" width="<%=wid %>" height="16">
+      <% } %>
+     
+       <a href="content.jsp?num=<%=article.getNum()%>&pageNum=<%=currentPage%>">
          <%=article.getSubject() %></a>
          <%if(article.getReadcount() >= 20) { %>
-         <img alt="" src="" border="0" height="16"> <%} %>
+         <img src="img/hot.gif" border="0" height="16">
+         <%} %>
        </td>
        
        <td align="center" width="100">
@@ -91,16 +135,47 @@ number = count;
 <%} %>
 </table>
 <%} %>
+
+<%
+ if(count > 0) {
+	 
+	 int pageBlock = 5;
+	 int imsi = count % pageSize == 0 ? 0 : 1;
+	 int pageCount = count / pageSize + imsi;
+	 
+	 int startPage =(int)((currentPage-1)/pageBlock) * pageBlock + 1;
+	 int endPage = startPage + pageBlock - 1;
+	 
+	 if(endPage > pageCount) endPage = pageCount;
+	 
+	 if(startPage > pageBlock) { 
+ %>
+<a href="list.jsp?pageNum=<%=startPage-pageBlock %>">[이전]</a>	 
+
+<%	 
+ } 
+	 for(int i=startPage; i<=endPage; i++) {
+%>
+<a href="list.jsp?pageNum=<%=i %>">[<%=i %>]</a>
+
+<% } 
+   if(endPage < pageCount) {
+%>
+<a href="list.jsp?pageNum=<%=startPage+pageBlock %>">[다음]</a>
+<%
+   }
+ }
+%>
+<!-- 검색창 -->
+<form action="list.jsp">
+	<select name="searchWhat">
+		<option value="writer">작성자</option>
+		<option value="subject">제목</option>
+		<option value="content">내용</option>
+	</select>
+	<input type="text" name="searchText">
+	<input type="submit" value="검색">
+</form>
 </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

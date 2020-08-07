@@ -8,12 +8,11 @@
 <meta charset="UTF-8">
 <title>My Board</title>
 <link href="style.css" type="text/css" rel="stylesheet">
-<script type="text/javascript" src="javascript.js"></script>
+<script type="text/javascript" src="script.js"></script>
 </head>
 <!-- 새글과 답변글 구분 코드  -->
 <%
     int num = 0, ref=1, step=0, depth=0;
-
     try {
            if(request.getParameter("num") != null) {
         	num  = Integer.parseInt(request.getParameter("num"));
@@ -21,7 +20,6 @@
         	step  = Integer.parseInt(request.getParameter("step"));
         	depth  = Integer.parseInt(request.getParameter("depth"));
            }
-
 %>
 <body bgcolor="<%=bodyback_c %>">
 <!-- <div align="center"><b>글쓰기</b></div><br><br> -->

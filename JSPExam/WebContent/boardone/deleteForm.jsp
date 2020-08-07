@@ -14,9 +14,8 @@
 <title>게시판</title>
 <link href="style.css" type="text/css" rel="stylesheet">
 
-<script type="text/javascript" src="javascript.js">
+<script type="text/javascript" src="javascript.js"></script>
 
-</script>
 
 
 </head>
@@ -25,7 +24,7 @@
 <b>글삭제</b>
 <br><br>
 <form action="deleteProc.jsp?pageNum=<%=pageNum %>" 
-method="post" name="delForm" onsubmit="return delete_Save()">
+method="post" name="delForm" onsubmit="return deleteSave()">
 
 <table border="1" align="center" 
 cellspacing="0" cellpadding="0" width="360">
@@ -57,4 +56,3 @@ cellspacing="0" cellpadding="0" width="360">
 </div>
 </body>
 </html>
-
