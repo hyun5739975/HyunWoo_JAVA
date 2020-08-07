@@ -3,7 +3,6 @@
 <%@ taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix ="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +10,12 @@
 <title> </title>
 </head>
 <body>
+<sql:update dataSource="jdbc/mydb">
+	update tempmember set passwd=? where id=?
+	<sql:param value="${'3456' }"/> 
+	<sql:param value="${'aaaa' }"/> 
+</sql:update>
+
 <sql:query var="rs" dataSource="jdbc/mydb">
 	select * from tempmember
 </sql:query>
