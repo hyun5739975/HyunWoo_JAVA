@@ -4,16 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> </title>
+<title> MVC 패턴 </title>
 </head>
 <body>
-<h2>include 지시어</h2>
-<%
-	String name1="김현우";
-%>
-
-<%@ include file="top.jsp"%>
-top.jsp 내용 포함
-<%@ include file="bottom.jsp" %>
+<h2 align="center">index page 입니다.</h2>
 </body>
 </html>
