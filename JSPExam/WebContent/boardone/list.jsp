@@ -154,22 +154,42 @@ number = count - (currentPage -1) * pageSize;
 	 int endPage = startPage + pageBlock - 1;
 	 
 	 if(endPage > pageCount) endPage = pageCount;
-	 
 	 if(startPage > pageBlock) { 
+ // 검색일 경우와 아닐 경우의 페이징 처리 
+       if(searchText == null) {
  %>
 <a href="list.jsp?pageNum=<%=startPage-pageBlock %>">[이전]</a>	 
+<%
+       } else {
+%>
+<a href="list.jsp?pageNum=<%=startPage-pageBlock %>&searchWhat=<%=searchWhat %>&searchText=<%=searchText%>">[이전]</a>
 
-<%	 
+<%
+       }
  } 
 	 for(int i=startPage; i<=endPage; i++) {
+	// 검색일 경우와 아닐경우  페이징 처리
+	if(searchText == null) {
+	
 %>
 <a href="list.jsp?pageNum=<%=i %>">[<%=i %>]</a>
+<% } else { %>
 
-<% } 
+<a href="list.jsp?pageNum=<%=i %>&searchWhat=<%=searchWhat %>&searchText=<%=searchText%>">[<%=i %>]</a>
+
+<%
+     }
+} 
    if(endPage < pageCount) {
+	   // 검색일 경우와 아닐 경우 페이징 처리
+	   if(searchText == null) {
 %>
 <a href="list.jsp?pageNum=<%=startPage+pageBlock %>">[다음]</a>
+<% } else { %>
+<a href="list.jsp?pageNum=<%=startPage+pageBlock %>&searchWhat=<%=searchWhat %>&searchText=<%=searchText%>">[다음]</a>
+
 <%
+     }
    }
  }
 %>
@@ -185,7 +205,18 @@ number = count - (currentPage -1) * pageSize;
   <input type="text" name="searchText">
   <input type="submit" value="검색">
 
+
 </form>
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

@@ -1,12 +1,14 @@
 package boardone;
-import java.sql.Timestamp;
 
+import java.sql.Timestamp;
 /* VO란
  * DB의 한 테이블에 존재하는 컬럼들을 멤버 변수로 작성하여, 테이블의 컬럼 값을 java에서 객체로 다루기 위해 사용합니다. 
  * 즉, 데이터들을 캡슐화 해서 객체로 만든 것입니다.
  * 예를 들어 User 테이블에 id, name, phone 컬럼이 있다면, UserVO 클래스에는 id, name, phone 멤버 변수가 존재하고 이에 대한 접근은 getter, setter로 다룹니다.
  */
-public class BoardVO { //Value Object
+
+public class BoardVO {
+
 	private int num;
 	private String writer;
 	private String email;
@@ -19,6 +21,7 @@ public class BoardVO { //Value Object
 	private Timestamp regdate;
 	private String content;
 	private String ip;
+	
 	
 	public int getNum() {
 		return num;
@@ -91,8 +94,5 @@ public class BoardVO { //Value Object
 	}
 	public void setIp(String ip) {
 		this.ip = ip;
-	}	
-	
-	
-	
+	}
 }

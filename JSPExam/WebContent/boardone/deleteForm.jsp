@@ -17,7 +17,6 @@
 <script type="text/javascript" src="javascript.js"></script>
 
 
-
 </head>
 <body bgcolor="<%=bodyback_c %>">
 <div align="center">
@@ -56,3 +55,13 @@ cellspacing="0" cellpadding="0" width="360">
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
