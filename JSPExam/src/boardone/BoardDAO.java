@@ -184,13 +184,11 @@ public class BoardDAO {
 		try {
 			con=ConnUtil.getConnection();
 			
-			pstmt = con.prepareStatement(
-			"update board set readcount=readcount+1 where num=?");
+			pstmt = con.prepareStatement("update board set readcount=readcount+1 where num=?");
 			pstmt.setInt(1, num);
 			pstmt.executeUpdate();
 			
-			pstmt =con.prepareStatement(
-				"select * from board where num =?");
+			pstmt =con.prepareStatement("select * from board where num =?");
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 			
@@ -328,8 +326,7 @@ public class BoardDAO {
 		try {
 			
 			con = ConnUtil.getConnection();
-			pstmt = con.prepareStatement(
-					"select pass from board where num =?");
+			pstmt = con.prepareStatement("select pass from board where num =?");
 			
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
@@ -339,8 +336,7 @@ public class BoardDAO {
 				
 				if(dbpasswd.equals(pass)) {
 					
-					pstmt = con.prepareStatement(
-					"delete from board where num=?");
+					pstmt = con.prepareStatement("delete from board where num=?");
 					
 					pstmt.setInt(1, num);
 					pstmt.executeUpdate();
@@ -451,12 +447,4 @@ public class BoardDAO {
 			
 			return articleList;
 		}
-		
-	
-	
-	
-	
-	
-	
-	
 }
