@@ -1,40 +1,42 @@
 @charset "UTF-8";
 
 BODY {
-	font-size:9pt, color:black; line-height: 160%; font-family:;
+	FONT-SIZE :9pt; COLOR:black; LINE-HEIGHT:160%;FONT-FAMILY:;
 }
 
 TD {
-	font-size:9pt, color:black; line-height: 160%; font-family:;
+	FONT-SIZE :9pt; COLOR:black; LINE-HEIGHT:160%;FONT-FAMILY:;
 }
 
-
 SELECT {
-	font-size:9pt, color:black; line-height: 160%; font-family:;
+	FONT-SIZE :9pt; COLOR:black; LINE-HEIGHT:160%;FONT-FAMILY:;
 }
 
 DIV {
-	font-size:9pt, color:black; line-height: 160%; font-family:;
+	FONT-SIZE :9pt; COLOR:black; LINE-HEIGHT:160%;FONT-FAMILY:;
 }
 
 FORM {
-	font-size:9pt, color:black; line-height: 160%; font-family:;
+	FONT-SIZE :9pt; COLOR:black; LINE-HEIGHT:160%;FONT-FAMILY:;
 }
 
 TEXTAREA {
-	border-right: 1px solid #999999; border-top: 1px solid #999999;
-	font-size: 9pt; border-left: 1px solid #999999; color: black;
-	border-bottom: 1px solid #999999; font-family: ;
-	background-color: white;
+	BORDER-RIGHT:1px solid #999999;BORDER-TOP:1px solid #999999;
+	FONT-SIZE:9pt;BORDER-LEFT:1px solid #999999;COLOR:BLACK;
+	BORDER-BOTTOM:1px solid #999999;FONT-FAMILY:;
+	BACKGROUND-COLOR:white;
 }
 
 INPUT {
-	border-right: 1px solid #999999; border-top: 1px solid #999999;
-	font-size: 9pt; border-left: 1px solid #999999; color: black;
-	border-bottom: 1px solid #999999; font-family: ;
-	background-color: white;
+	BORDER-RIGHT:1px solid #999999;BORDER-TOP:1px solid #999999;
+	FONT-SIZE:9pt;BORDER-LEFT:1px solid #999999;COLOR:BLACK;
+	BORDER-BOTTOM:1px solid #999999;FONT-FAMILY:;
+	BACKGROUND-COLOR:white;
 }
 
-A:link {text-decoration: none; color: #696969;}
-A:hover {text-decoration: yes; color: #66CCFF;}
-A:visited {text-decoration: none; color: #330066;}
+A:link {text-decoration: none;color:#696969;}
+A:hover {text-decoration: yes;color:#66CCFF;}
+A:visited {text-decoration: none;color:#330066;}
+
+
+
