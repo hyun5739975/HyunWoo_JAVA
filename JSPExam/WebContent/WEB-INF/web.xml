@@ -122,11 +122,11 @@
 	 -->
 	 
 	<servlet>
-		<servlet-name>myControl</servlet-name>
+		<servlet-name>ControlServlet</servlet-name>
 		<servlet-class>mvcMem.control.ControlServlet</servlet-class>
 	</servlet> 
 	<servlet-mapping>
-	<servlet-name>myContorl</servlet-name>
+	<servlet-name>ControlServlet</servlet-name>
 	<url-pattern>*.mdo</url-pattern>
 	</servlet-mapping>
 </web-app>

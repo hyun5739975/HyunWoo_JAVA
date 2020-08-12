@@ -1,13 +1,34 @@
-package memberone;
+package mvcMem.model;
+// 데이터베이스 연동을 담당해줄 DAO 클래스
 
-import java.sql.*;
-import javax.sql.*;
-import javax.naming.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 public class StudentDAO {
 
-	// 디비 연결함수
+	private static StudentDAO instance = null;
+	
+	public StudentDAO() {	}
+	
+	public static StudentDAO getInstance() {
+		
+		if(instance == null) {
+			synchronized (StudentDAO.class) {
+				instance = new StudentDAO();
+			}
+		}
+	
+		return instance;
+	}
+	
 	private Connection getConnection() {
 
 		Connection con = null;
@@ -15,13 +36,17 @@ public class StudentDAO {
 			Context init = new InitialContext();
 			DataSource ds = (DataSource) init.lookup("java:comp/env/jdbc/mydb");
 			con = ds.getConnection();
-		} catch (Exception se) {
-			System.err.println("Connection 생성 실패!!!");
+		}catch(NamingException e) {
+	     	System.out.println("Connection 생성 실패");	
+			e.printStackTrace();
+		}catch (Exception se) {
+			System.out.println("Connection 생성 실패!!!");
+			se.printStackTrace();
 		}
-
 		return con;
 	}
-
+	
+	
 	// 아이디 체크함수
 	public boolean idCheck(String id) {
 		boolean result = true;
@@ -118,7 +143,7 @@ public class StudentDAO {
 	}
 	
 	// 데이터베이스에 회원 데이터를 넣기 위한 메소드 추가
-	public boolean memberInsert(StudentVO vo) {
+	public boolean memberInsert(StudentVo vo) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -218,12 +243,12 @@ public class StudentDAO {
 	
 	// 아이디를 가지고 회원정보를 가져올 메소드 구현
 		
-  public StudentVO getMember(String id) {
+  public StudentVo getMember(String id) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StudentVO vo = null;
+		StudentVo vo = null;
 		
 		//String strQuery="select * from student where id=?";
 		
@@ -236,7 +261,7 @@ public class StudentDAO {
 	rs = pstmt.executeQuery();
 	
 	if(rs.next()) {// 해당 아이디에 회원이 존재하면
-		vo = new StudentVO();
+		vo = new StudentVo();
 		
 		vo.setId(rs.getString("id"));
 		vo.setPass(rs.getString("pass"));
@@ -276,7 +301,7 @@ public class StudentDAO {
 	// 정보 수정 버튼을 누르면 데이터베이스에 update를 수행해야함
     // 정보수정을 처리할 메소드 구현
   
-    public void updateMember(StudentVO vo) {
+    public void updateMember(StudentVo vo) {
     	
     	Connection con = null;
     	PreparedStatement pstmt = null;
@@ -383,7 +408,4 @@ public class StudentDAO {
     	
     	return result;
     }
-    
-   
-    
 }

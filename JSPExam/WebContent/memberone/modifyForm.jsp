@@ -13,7 +13,7 @@
 <script type="text/javascript" src="script.js"></script>
 </head>
 <%
-     String loginID = (String)session.getAttribute("loginID");
+	String loginID = (String)session.getAttribute("loginID");
      StudentVO vo = dao.getMember(loginID);
 %>
 <body>

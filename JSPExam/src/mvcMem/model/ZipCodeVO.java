@@ -1,6 +1,9 @@
-package mvcMem.Model;
+package mvcMem.model;
+
+// 우편번호를 나타내는 데이터 클래스
 
 public class ZipCodeVO {
+
 	private String zipcode;
 	private String sido;
 	private String gugun;
@@ -44,5 +47,6 @@ public class ZipCodeVO {
 	public void setBunji(String bunji) {
 		this.bunji = bunji;
 	}
+	
 	
 }
