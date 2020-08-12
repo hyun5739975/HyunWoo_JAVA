@@ -5,15 +5,14 @@
  
 <jsp:useBean id="dao" class="memberone.StudentDAO" />    
 <%
-    request.setCharacterEncoding("utf-8");
-    String check = request.getParameter("check");
-    String dong = request.getParameter("dong");
-    
-    Vector<ZipCodeVO> zipcodeList = dao.zipcodeRead(dong);
-    
-    int totalList = zipcodeList.size();
- 
-%>    
+    	request.setCharacterEncoding("utf-8");
+            String check = request.getParameter("check");
+            String dong = request.getParameter("dong");
+            
+            Vector<ZipCodeVO> zipcodeList = dao.zipcodeRead(dong);
+            
+            int totalList = zipcodeList.size();
+    %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,19 +40,21 @@
 <table>
 
 <%
-  if(check.equals("n")) {
+	if(check.equals("n")) {
 %>
 <%
-      if(zipcodeList.isEmpty()) {
+	if(zipcodeList.isEmpty()) {
 %>
      <tr><td align="center"><br>검색된 결과가 없습니다.</td></tr>
-  <%} else { %>
+  <%
+  	} else {
+  %>
 
   <tr><td align="center"><br>
      ※ 검색 후, 아래 우편번호를 클릭하면 자동으로 입력 됩니다.
   </td></tr>
 <%
-    for(int i=0; i<totalList;i++) {
+	for(int i=0; i<totalList;i++) {
     	ZipCodeVO vo =zipcodeList.elementAt(i);
     	
     	String tempZipcode = vo.getZipcode();
@@ -65,7 +66,6 @@
     	
     	if(tempRi == null) tempRi ="";
     	if(tempBunji == null) tempBunji ="";
-
 %>
 
 <tr><td>
